@@ -5,7 +5,7 @@ import dropdown_icon from "../Components/Assets/dropdown_icon.png";
 import Item from "../Components/Item/Item";
 
 const ShopCategory = (props) => {
-  const { all_product } = useContext(ShopContext);//No props needed. Data comes directly.
+  const { all_product } = useContext(ShopContext);//No props needed. Data comes directly.all_product now contains array of all products
 
   return (
     <div className="shop-category">
