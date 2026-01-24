@@ -90,8 +90,19 @@ const Product=mongoose.model("Product",{
 // Add Product API → “Save product details in mongo database using that image URL”// They do two different jobs.
 
 app.post('/addproduct', async (req, res) => {
+    let products =await Product.find({});//saare products array(products) mai store krliye
+    let id;//isse ab hume separatley id enter krne ki need ni hai ye khud assign krdega id
+    if(products.length>0){
+        let lastarrayproduct=products.slice(-1);
+        let lastproductid=lastarrayproduct[0];
+        id=lastproductid+1;
+
+    }else{
+        id=1;
+    }
+
   const product = new Product({ //Product → Class ,product → Object made from that class
-    id: req.body.id,
+    id: id,
     name: req.body.name,
     image: req.body.image,
     category: req.body.category,
@@ -100,11 +111,28 @@ app.post('/addproduct', async (req, res) => {
   });
 console.log(product)
   await product.save();//save hone mai time lg skta isliye await use
-onsole.log("saved")
+console.log("saved");
   res.json({
     success: true,
     name: req.body.name,
   });
+});
+
+app.post('/removeproduct', async (req, res) => {
+  await product.findOneAndDelete({id:req.body.id});//save hone mai time lg skta isliye await use
+console.log("Removed");
+  res.json({
+    success: true,
+    name: req.body.name,
+  });
+});
+
+//Creating API for getting all products
+
+app.get('/allproducts', async (req, res) => {
+ let products =await Product.find({});
+console.log("all products fetched");
+  res.send(products);
 });
 
 
