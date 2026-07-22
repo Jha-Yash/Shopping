@@ -10,9 +10,13 @@ const cors=require("cors");//using this we can add permision to our appli. to ac
 //Without it → browser blocks API calls
 const { error } = require("console");
 const { type } = require("os");
-
+app.use(cors());
+app.use(express.json());
 //database connection with mongodb
-mongoose.connect("mongodb+srv://yashjha:Yashjha%4088@cluster0.umblvhw.mongodb.net/e-commerce")
+mongoose
+  .connect("mongodb+srv://yashjha:Yashjha%4088@cluster0.umblvhw.mongodb.net/e-commerce")
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
 
 //API Creation
 
@@ -93,9 +97,9 @@ app.post('/addproduct', async (req, res) => {
     let products =await Product.find({});//saare products array(products) mai store krliye
     let id;//isse ab hume separatley id enter krne ki need ni hai ye khud assign krdega id
     if(products.length>0){
-        let lastarrayproduct=products.slice(-1);
-        let lastproductid=lastarrayproduct[0];
-        id=lastproductid+1;
+        let lastarrayproduct = products.slice(-1);
+        let lastproduct = lastarrayproduct[0];
+        id = lastproduct.id + 1;
 
     }else{
         id=1;
@@ -119,7 +123,7 @@ console.log("saved");
 });
 
 app.post('/removeproduct', async (req, res) => {
-  await product.findOneAndDelete({id:req.body.id});//save hone mai time lg skta isliye await use
+  await Product.findOneAndDelete({id:req.body.id});//save hone mai time lg skta isliye await use
 console.log("Removed");
   res.json({
     success: true,
